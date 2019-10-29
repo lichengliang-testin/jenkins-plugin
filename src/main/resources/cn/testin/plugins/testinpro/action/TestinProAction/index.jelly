@@ -1,0 +1,67 @@
+<?jelly escape-by-default='true'?>
+<j:jelly xmlns:j="jelly:core" xmlns:l="/lib/layout" xmlns:st="jelly:stapler">
+    <l:layout title="TestinPro">
+        <l:side-panel>
+            <st:include page="sidepanel.jelly" it="${it.run}" optional="true" />
+        </l:side-panel>
+        <l:main-panel>
+            <h1>Report:</h1>
+            <div>
+                <table>
+                    <j:if test="${not empty it.jobId}">
+                        <tr>
+                            <td>${%JobId}</td><td>${it.jobId}</td>
+                        </tr>
+                    </j:if>
+                    <j:if test="${not empty it.projectId}">
+                        <tr>
+                            <td>${%projectId}</td><td>${it.projectId}</td>
+                        </tr>
+                    </j:if>
+                    <j:if test="${not empty it.taskDetail}">
+                        <tr>
+                            <td>${%appName}</td><td>${it.taskDetail.appInfo.appName}</td>
+                        </tr>
+                        <tr>
+                            <td>${%appVersion}</td><td>${it.taskDetail.appInfo.appVersion}</td>
+                        </tr>
+                        <tr>
+                            <td>${%packageUrl}</td><td><a target="_blank" href="${it.taskDetail.appInfo.packageUrl}">${it.taskDetail.appInfo.packageUrl}</a></td>
+                        </tr>
+                    </j:if>
+                    <j:if test="${not empty it.taskid}">
+                        <tr>
+                            <td>${%taskid}</td><td>${it.taskid}</td>
+                        </tr>
+                    </j:if>
+                    <j:if test="${not empty it.taskStatusDesc}">
+                        <tr>
+                            <td>${%taskStatus}</td><td>${it.taskStatusDesc}</td>
+                        </tr>
+                    </j:if>
+                    <j:if test="${not empty it.resultResult}">
+                        <tr>
+                            <td>${%resultResult}</td><td>${it.resultResult}</td>
+                        </tr>
+                    </j:if>
+                    <tr>
+                        <td>${%success}</td><td>${it.success} (${%script})</td>
+                    </tr>
+                    <tr>
+                        <td>${%fail}</td><td>${it.fail} (${%script})</td>
+                    </tr>
+                    <j:if test="${0 ne it.other}">
+                        <tr>
+                            <td>${%other}</td><td>${it.other} (${%script})</td>
+                        </tr>
+                    </j:if>
+                    <j:if test="${not empty it.reportUrl}">
+                        <tr>
+                            <td>${%reportUrl}</td><td><a target="_blank" href="${it.reportUrl}">${it.reportUrl}</a></td>
+                        </tr>
+                    </j:if>
+                </table>
+            </div>
+        </l:main-panel>
+    </l:layout>
+</j:jelly>

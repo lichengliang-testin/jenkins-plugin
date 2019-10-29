@@ -1,0 +1,15 @@
+<div>
+    Path to *.apk file
+    <br>
+    ** Match all path
+    <br>
+    * Match Level 1
+    <ul>
+        <li>${Work Space}/a/b/c/d.xx</li>
+        <li>${Work Space}/a/c/d/d.xx</li>
+        <li>${Work Space}/a/e/g/k.tt</li>
+        <label>**/*</label><li>Match All</li>
+        <label>**/d.xx</label><li>Match: ${Work Space}/a/b/c/d.xx And ${Work Space}/a/c/d/d.xx</li>
+        <label>a/*/c/*.xx</label><li>Match: ${Work Space}/a/b/c/d.xx</li>
+    </ul>
+</div>

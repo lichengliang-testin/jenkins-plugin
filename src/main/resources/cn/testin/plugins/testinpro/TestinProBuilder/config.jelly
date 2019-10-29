@@ -1,0 +1,36 @@
+<?jelly escape-by-default='true'?>
+<j:jelly xmlns:j="jelly:core" xmlns:st="jelly:stapler" xmlns:d="jelly:define" xmlns:l="/lib/layout"
+         xmlns:t="/lib/hudson" xmlns:f="/lib/form">
+    <f:entry title="${%Account}" field="email">
+        <f:textbox  default="demo@testin.cn"/>
+    </f:entry>
+    <f:entry title="${%Pwd}" field="pwd">
+        <f:password  value="e10adc3949ba59abbe56e057f20f883e"/>
+    </f:entry>
+    <f:entry title="${%ProjectId}" field="projectId">
+        <f:textbox  />
+    </f:entry>
+    <f:entry title="${%JobId}" field="jobId">
+        <f:textbox  />
+    </f:entry>
+    <f:advanced>
+        <f:entry title="${%Url}" field="url">
+            <f:textbox default="http://openapi.pro.testin.cn"/>
+        </f:entry>
+        <f:entry title="${%Apikey}" field="apikey">
+            <f:textbox  default="0cc70ef717d01b48ebfef5868a60cdd9"/>
+        </f:entry>
+        <f:entry title="${%PackagePath}" field="packagePath">
+            <f:textbox  default="**/*.apk"/>
+        </f:entry>
+        <f:entry title="${%TaskDescr}" field="taskDescr">
+            <f:textbox/>
+        </f:entry>
+        <f:entry title="${%Gap}" field="sleep">
+            <f:textbox default="300000"/>
+        </f:entry>
+        <f:entry title="${%Share}" field="share">
+            <f:textbox default="1"/>
+        </f:entry>
+    </f:advanced>
+</j:jelly>
