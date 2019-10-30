@@ -60,6 +60,7 @@ public class TestinProBuilder extends Builder implements SimpleBuildStep, Serial
     private Integer jobId;
     private String taskDescr;
     private String packagePath;
+    private String packageUrl;
 
     private Long sleep;
     private Integer share;
@@ -180,6 +181,13 @@ public class TestinProBuilder extends Builder implements SimpleBuildStep, Serial
             return;
         }
         appUrls.add(url);
+    }
+
+    public String getPackageUrl() {
+        if (isEmpty(packageUrl) && !isEmpty(appUrls)) {
+            return appUrls.get(0);
+        }
+        return packageUrl;
     }
 
     private static Properties loadProperties() {

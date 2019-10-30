@@ -47,8 +47,9 @@ public class TaskExectuteTestinProHandler implements TestinProHandler {
             handlerNotLoginException();
         }
         TaskListener listener = builder.getContext().getListener();
-        if (isEmpty(builder.getAppUrls())) {
+        if (isEmpty(builder.getPackageUrl())) {
             listener.getLogger().println("not have app url, skip ???");
+            handlerNoArgException("App Url ");
             return;
         }
 
@@ -61,7 +62,7 @@ public class TaskExectuteTestinProHandler implements TestinProHandler {
                 "task execute start...\n" +
                         "jobId:" + builder.getJobId() + "\n");
 
-        String req = getReq(builder.getApikey(), sid, builder.getJobId(), builder.getProjectId(), builder.getAppUrls().get(0), isEmpty(builder.getTaskDescr()) ? "" : builder.getTaskDescr(), share);
+        String req = getReq(builder.getApikey(), sid, builder.getJobId(), builder.getProjectId(), builder.getPackageUrl(), isEmpty(builder.getTaskDescr()) ? "" : builder.getTaskDescr(), share);
 
         long begin = System.currentTimeMillis();
         OpenApi openApi = new OpenApi(builder);
@@ -79,7 +80,7 @@ public class TaskExectuteTestinProHandler implements TestinProHandler {
     }
 
     private String getReq(String apikey, String sid, Integer jobId, Integer projectId, String packageUrl, String taskDescr, Integer share) {
-        return String.format("{\"apikey\":\"%s\",\"timestamp\":%s,\"sid\":\"%s\",\"mkey\":\"realtest\",\"action\":\"app\",\"op\":\"ScheduledJob.execute\",\"data\":{\"jobId\":%s,\"projectid\":%s,\"appinf\":{\"packageUrl\":\"%s\"},\"taskDescr\":\"%s\",\"share\":\"%s\"}}",
+        return String.format("{\"apikey\":\"%s\",\"timestamp\":%s,\"sid\":\"%s\",\"mkey\":\"realtest\",\"action\":\"app\",\"op\":\"ScheduledJob.execute\",\"data\":{\"jobId\":%s,\"projectid\":%s,\"appinfo\":{\"packageUrl\":\"%s\"},\"taskDescr\":\"%s\",\"share\":\"%s\"}}",
                 apikey,
                 System.currentTimeMillis(),
                 sid,
