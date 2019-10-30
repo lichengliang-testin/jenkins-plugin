@@ -264,8 +264,8 @@ public class TestinProBuilder extends Builder implements SimpleBuildStep, Serial
         testinProService.register(new ReportUrlTestinProHandler(this));
         testinProService.register(new TaskDetailTestinProHandler(this));
         testinProService.register(new TaskResultTestinProHandler(this));
-        testinProService.register(new DefaultDisplayTestinProHandler(this));
         testinProService.register(new EnvPublisherHandler(this));
+        testinProService.register(new DefaultDisplayTestinProHandler(this));
     }
 
     @DataBoundConstructor
