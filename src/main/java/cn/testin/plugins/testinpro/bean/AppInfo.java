@@ -2,6 +2,8 @@ package cn.testin.plugins.testinpro.bean;
 
 import java.io.Serializable;
 
+import static cn.testin.plugins.testinpro.utils.verify.ObjectUtils.isEmpty;
+
 /**
  * @author lichengliang
  *
@@ -13,6 +15,8 @@ public class AppInfo implements Serializable {
 
     // 应用名称
     private String appName;
+
+    private String originalPkgUrl;
 
     // 应用包地址
     private String packageUrl;
@@ -50,6 +54,9 @@ public class AppInfo implements Serializable {
     }
 
     public String getPackageUrl() {
+        if (!isEmpty(originalPkgUrl)) {
+            return originalPkgUrl;
+        }
         return packageUrl;
     }
 
@@ -119,5 +126,13 @@ public class AppInfo implements Serializable {
 
     public void setIconUrl(String iconUrl) {
         this.iconUrl = iconUrl;
+    }
+
+    public String getOriginalPkgUrl() {
+        return originalPkgUrl;
+    }
+
+    public void setOriginalPkgUrl(String originalPkgUrl) {
+        this.originalPkgUrl = originalPkgUrl;
     }
 }

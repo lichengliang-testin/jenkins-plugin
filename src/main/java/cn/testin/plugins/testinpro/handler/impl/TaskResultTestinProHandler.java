@@ -14,6 +14,7 @@ import net.sf.json.JSONObject;
 
 import java.io.PrintStream;
 
+import static cn.testin.plugins.testinpro.bean.PortalTask.isDone;
 import static cn.testin.plugins.testinpro.utils.verify.ObjectUtils.isEmpty;
 
 /**
@@ -135,17 +136,6 @@ public class TaskResultTestinProHandler implements TestinProHandler {
         StringBuilder sb = new StringBuilder("【task info】\n");
         sb.append("\texecute status: ").append(TaskStatusEnum.search(portalTask.getTaskStatus()));
         logger.println(sb);
-    }
-
-    /**
-     * 任务状态【1：已取消；2：已删除；3：等待测试；4：执行中；5：测试完成；6：取消中】
-     */
-    private boolean isDone(Integer taskStatus) {
-        if (isEmpty(taskStatus)) {
-            handlerNoArgException("Task Run Status");
-        }
-
-        return 1 == TaskStatusEnum.search(taskStatus).getCode();
     }
 
     private PortalTask parse(Object res) {

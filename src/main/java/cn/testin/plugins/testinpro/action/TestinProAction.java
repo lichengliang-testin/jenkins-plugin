@@ -158,11 +158,11 @@ public class TestinProAction extends AbstractAction implements RunAction2, Seria
                     if (isEmpty(val) && isEmpty(resultCategory)) {
                         continue;
                     }
-                    if (ResultCategoryEnum.pass.getValue().equals(action.resultCategory)) {
+                    if (ResultCategoryEnum.pass.getValue().equals(resultCategory)) {
                         action.success += val;
                         continue;
                     }
-                    if (ResultCategoryEnum.isError(action.resultCategory)) {
+                    if (ResultCategoryEnum.isError(resultCategory)) {
                         action.fail += val;
                         continue;
                     }

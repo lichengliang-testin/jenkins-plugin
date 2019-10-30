@@ -234,14 +234,24 @@ public class PortalTask implements Serializable {
 	@Nullable
 	public TaskSummary getTaskSummary(){
 		if (!isEmpty(this) &&
-				TaskStatusEnum.complete.equals(
-						TaskStatusEnum.search(this.getTaskStatus()))) {
+				isDone(this.getTaskStatus())) {
 			String content = this.getContent();
 			if (!isEmpty(content)) {
 				return TaskSummary.parse(content);
 			}
 		}
 		return null;
+	}
+
+	/**
+	 * 任务状态【1：已取消；2：已删除；3：等待测试；4：执行中；5：测试完成；6：取消中】
+	 */
+	public static boolean isDone(Integer taskStatus) {
+		if (isEmpty(taskStatus)) {
+			return false;
+		}
+
+		return 1 == TaskStatusEnum.search(taskStatus).getCode();
 	}
 }
 

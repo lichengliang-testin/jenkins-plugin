@@ -294,10 +294,10 @@ public class TestinProBuilder extends Builder implements SimpleBuildStep, Serial
                 "OpenAPI Configuration:" + "\n" +
                 "server url: " + url + "\n" +
                 "apikey: " + apikey + "\n" +
-                "email: " + email + "\n" +
-                "pwd: " + pwd + "\n" +
+                "account: " + email + "\n" +
                 "projectId: " + projectId + "\n" +
                 "jobId: " + jobId + "\n" +
+                "share: " + share + "\n" +
                 "packagePath: " + packagePath + "\n" +
                 (isEmpty(taskDescr) ? "" : "taskDescr: " + taskDescr)
         );
