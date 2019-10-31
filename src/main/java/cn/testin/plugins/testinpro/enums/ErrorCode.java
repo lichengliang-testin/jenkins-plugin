@@ -10,6 +10,7 @@ public enum ErrorCode {
      */
     unknownError(10000, "未知异常"),
     notArgError(100, "缺少参数"),
+    otherError(200, "缺少参数"),
     ;
 
     private int code;

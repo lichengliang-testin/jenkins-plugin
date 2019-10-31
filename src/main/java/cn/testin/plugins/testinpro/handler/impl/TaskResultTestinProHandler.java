@@ -1,5 +1,6 @@
 package cn.testin.plugins.testinpro.handler.impl;
 
+import cn.testin.plugins.testinpro.Messages;
 import cn.testin.plugins.testinpro.TestinProBuilder;
 import cn.testin.plugins.testinpro.api.channel.OpenApi;
 import cn.testin.plugins.testinpro.bean.PortalTask;
@@ -107,8 +108,7 @@ public class TaskResultTestinProHandler implements TestinProHandler {
                 Thread.sleep(SLEEP);
             } catch (InterruptedException e) {
                 this.needRetry = false;
-                listener.error(e.getMessage());
-                throw new CommonException(ErrorCode.unknownError.getCode(), e);
+                throw new CommonException(ErrorCode.unknownError.getCode(), Messages.TestinProBuilder_DescriptorImpl_Interrupted());
             }
         }
 

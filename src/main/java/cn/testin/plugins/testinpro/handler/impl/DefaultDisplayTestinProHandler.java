@@ -98,10 +98,6 @@ public class DefaultDisplayTestinProHandler implements TestinProHandler {
         draw(sb, Messages.TestinProBuilder_TaskInfo_taskResult(), null == resultCategoryEnum ? null : resultCategoryEnum.getDescr());
 
         logger.println(sb);
-
-        if (ResultCategoryEnum.isError(resultCategory)) {
-            handlerTaskExectuteException();
-        }
     }
 
     private void draw(StringBuffer sb, String key, Object value) {

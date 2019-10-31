@@ -54,7 +54,7 @@ public class UpLoadTestinProHandler implements TestinProHandler {
         List<FilePath> files = scan(builder);
 
         if (isEmpty(files)) {
-            listener.getLogger().println("no search app file!");
+            handlerException("no search app file!");
             return;
         }
 

@@ -68,7 +68,7 @@ public class TaskExectuteTestinProHandler implements TestinProHandler {
         OpenApi openApi = new OpenApi(builder);
         Object res = openApi.doPress(req);
         if (isEmpty(res)) {
-            handlerTaskExectuteException();
+            handlerTaskExecuteException();
         }
 
         String taskid = Objects.toString(res);

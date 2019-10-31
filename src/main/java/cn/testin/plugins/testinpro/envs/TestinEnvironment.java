@@ -22,7 +22,7 @@ import static cn.testin.plugins.testinpro.utils.verify.ObjectUtils.isEmpty;
 @Extension
 public class TestinEnvironment extends EnvironmentContributor {
 
-    private final Map<String, String> interiorEnvs = new HashMap<>(16);
+    private final Map<String, String> interiorEnvs = new HashMap<>(64);
 
     @Override
     public void buildEnvironmentFor(@Nonnull Run r, @Nonnull EnvVars envs, @Nonnull TaskListener listener) throws IOException, InterruptedException {
@@ -42,5 +42,12 @@ public class TestinEnvironment extends EnvironmentContributor {
             return;
         }
         interiorEnvs.put(key, value);
+    }
+
+    public void clean(){
+        if (isEmpty(interiorEnvs)) {
+            return;
+        }
+        interiorEnvs.clear();
     }
 }

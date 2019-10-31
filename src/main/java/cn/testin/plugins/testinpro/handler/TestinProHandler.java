@@ -1,5 +1,6 @@
 package cn.testin.plugins.testinpro.handler;
 
+import cn.testin.plugins.testinpro.Messages;
 import cn.testin.plugins.testinpro.enums.ErrorCode;
 import cn.testin.plugins.testinpro.exception.CommonException;
 
@@ -55,21 +56,21 @@ public interface TestinProHandler {
      * 登录失败
      */
     default void handlerLoginException() {
-        throw new CommonException(ErrorCode.unknownError.getCode(), "Login is failure!");
+        throw new CommonException(ErrorCode.unknownError.getCode(), Messages.TestinProBuilder_RunnerInfo_LoginFailure());
     }
 
     /**
      * 未登录
      */
     default void handlerNotLoginException() {
-        throw new CommonException(ErrorCode.unknownError.getCode(), "Not Login!");
+        throw new CommonException(ErrorCode.unknownError.getCode(), Messages.TestinProBuilder_RunnerInfo_NotLogin());
     }
 
     /**
      * 上传失败
      */
     default void handlerUploadException() {
-        throw new CommonException(ErrorCode.unknownError.getCode(), "Upload Error!");
+        throw new CommonException(ErrorCode.unknownError.getCode(), Messages.TestinProBuilder_RunnerInfo_UploadFailure());
     }
 
     /**
@@ -77,35 +78,50 @@ public interface TestinProHandler {
      * @param argName 参数名称
      */
     default void handlerNoArgException(String argName) {
-        throw new CommonException(ErrorCode.notArgError.getCode(), argName + " is null!");
+        throw new CommonException(ErrorCode.notArgError.getCode(), Messages.TestinProBuilder_RunnerInfo_LackArg(argName));
+    }
+
+    /**
+     * 缺少参数异常
+     * @param msg 错误信息
+     */
+    default void handlerException(String msg) {
+        throw new CommonException(ErrorCode.otherError.getCode(), msg);
     }
 
     /**
      * 任务执行失败
      */
-    default void handlerTaskExectuteException() {
-        throw new CommonException(ErrorCode.unknownError.getCode(), "Task Execute is Error!");
+    default void handlerTaskExecuteException() {
+        throw new CommonException(ErrorCode.unknownError.getCode(), Messages.TestinProBuilder_RunnerInfo_TaskExecuteException());
     }
 
     /**
      * 获取报告链接失败
      */
     default void handlerReportUrlException() {
-        throw new CommonException(ErrorCode.unknownError.getCode(), "Get Report Url Error!");
+        throw new CommonException(ErrorCode.unknownError.getCode(), Messages.TestinProBuilder_RunnerInfo_GetReportUrlError());
     }
 
     /**
      * 获取报告链接失败
      */
     default void handlerTaskDetailException() {
-        throw new CommonException(ErrorCode.unknownError.getCode(), "Get Task Detail Error!");
+        throw new CommonException(ErrorCode.unknownError.getCode(), Messages.TestinProBuilder_RunnerInfo_GetTaskDetailError());
     }
 
     /**
      * 获取报告链接失败
      */
     default void handlerTaskResultException() {
-        throw new CommonException(ErrorCode.unknownError.getCode(), "Get Task Result Error!");
+        throw new CommonException(ErrorCode.unknownError.getCode(), Messages.TestinProBuilder_RunnerInfo_GetTaskResultError());
+    }
+
+    /**
+     * 测试结果失败
+     */
+    default void handlerTaskExecuteFailException() {
+        throw new CommonException(ErrorCode.unknownError.getCode(), Messages.TestinProBuilder_RunnerInfo_TaskExecuteFailure());
     }
 
 }

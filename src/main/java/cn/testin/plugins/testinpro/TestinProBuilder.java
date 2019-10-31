@@ -14,10 +14,9 @@ import cn.testin.plugins.testinpro.utils.http.CapableHttpUtil;
 import hudson.Launcher;
 import hudson.Extension;
 import hudson.FilePath;
+import hudson.model.*;
+import hudson.tasks.BuildStep;
 import hudson.util.FormValidation;
-import hudson.model.AbstractProject;
-import hudson.model.Run;
-import hudson.model.TaskListener;
 import hudson.tasks.Builder;
 import hudson.tasks.BuildStepDescriptor;
 import org.kohsuke.stapler.DataBoundConstructor;
@@ -32,7 +31,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Properties;
 
-import jenkins.tasks.SimpleBuildStep;
 import org.jenkinsci.Symbol;
 
 import static cn.testin.plugins.testinpro.utils.BeanUtils.instantiation;
@@ -45,7 +43,7 @@ import static cn.testin.plugins.testinpro.utils.verify.ObjectUtils.isEmpty;
  * <p>
  * testin jenkins plugin builder
  */
-public class TestinProBuilder extends Builder implements SimpleBuildStep, Serializable {
+public class TestinProBuilder extends Builder implements BuildStep, Serializable {
 
     private static final long serialVersionUID = 1L;
     private static final String MULTI_VALUE_ATTRIBUTE_DELIMITERS = ",; ";
@@ -284,6 +282,19 @@ public class TestinProBuilder extends Builder implements SimpleBuildStep, Serial
     }
 
     @Override
+    public boolean perform(Build<?, ?> build, Launcher launcher, BuildListener listener) throws InterruptedException, IOException {
+        try {
+            this.perform(build, build.getWorkspace(), launcher, listener);
+        }catch (CommonException e) {
+            listener.error(draw(e.getMessage()));
+            return false;
+        }catch (InterruptedException e) {
+            listener.error(draw(Messages.TestinProBuilder_DescriptorImpl_Interrupted()));
+            return false;
+        }
+        return true;
+    }
+
     public void perform(Run<?, ?> run, FilePath workspace, Launcher launcher, TaskListener listener) throws InterruptedException, IOException {
 
         listener.getLogger().println("TestinPro plugin is running with parameters\n" +
@@ -312,6 +323,10 @@ public class TestinProBuilder extends Builder implements SimpleBuildStep, Serial
         TestinProService service = getDefaultTestinProService();
 
         service.execute();
+    }
+
+    private String draw(String message) {
+        return String.format("【%s】 \n", message);
     }
 
     @Symbol("testinPro")

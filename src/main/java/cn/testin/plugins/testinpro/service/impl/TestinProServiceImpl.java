@@ -1,6 +1,8 @@
 package cn.testin.plugins.testinpro.service.impl;
 
+import cn.testin.plugins.testinpro.Messages;
 import cn.testin.plugins.testinpro.TestinProBuilder;
+import cn.testin.plugins.testinpro.enums.ErrorCode;
 import cn.testin.plugins.testinpro.exception.CommonException;
 import cn.testin.plugins.testinpro.service.TestinProService;
 import cn.testin.plugins.testinpro.handler.TestinProHandler;
@@ -37,6 +39,10 @@ public class TestinProServiceImpl implements TestinProService {
 
     @Override
     public void execute() {
+        executeHandler();
+    }
+
+    private void executeHandler() {
         for (TestinProHandler handler : handlers) {
             int index = 0;
             do {
@@ -54,11 +60,10 @@ public class TestinProServiceImpl implements TestinProService {
                             throw e;
                         }
                         try {
-                            builder.getContext().getListener().getLogger().println("Try to retry if something goes wrong...");
+                            builder.getContext().getListener().getLogger().println(Messages._TestinProBuilder_RunnerInfo_TryToRetry());
                             Thread.sleep(SLEEP);
                         } catch (InterruptedException e1) {
-                            builder.getContext().getListener().error(e.getMessage());
-                            index = Integer.MAX_VALUE;
+                            throw new CommonException(ErrorCode.unknownError.getCode(), Messages.TestinProBuilder_DescriptorImpl_Interrupted());
                         }
                     }
                 } finally {
