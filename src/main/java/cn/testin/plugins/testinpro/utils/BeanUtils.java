@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static cn.testin.plugins.testinpro.utils.ClassUtils.getDefaultClassLoader;
+import static cn.testin.plugins.testinpro.utils.other.ExceptionUtils.handlerException;
 import static cn.testin.plugins.testinpro.utils.verify.ObjectUtils.isEmpty;
 
 /**
@@ -55,7 +56,7 @@ public abstract class BeanUtils {
             return null;
         }
         if (clazz.isInterface()) {
-            throw new CommonException(ErrorCode.unknownError.getCode(), "Specified class is an interface");
+            handlerException("Specified class is an interface");
         }
         Constructor<?>[] declaredConstructors = clazz.getDeclaredConstructors();
         if (isEmpty(declaredConstructors)) {
@@ -81,7 +82,7 @@ public abstract class BeanUtils {
                     return (T) declaredConstructor.newInstance(arg);
                 } catch (Exception e) {
                     e.printStackTrace();
-                    throw new CommonException(ErrorCode.unknownError.getCode(), "Is it an abstract class?/Is the constructor accessible?");
+                    handlerException("Is it an abstract class?/Is the constructor accessible?");
                 }
             }
         }

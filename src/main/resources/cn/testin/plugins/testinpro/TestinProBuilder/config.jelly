@@ -26,8 +26,11 @@
         <f:entry title="${%TaskDescr}" field="taskDescr">
             <f:textbox/>
         </f:entry>
-        <f:entry title="${%Gap}" field="sleep">
-            <f:textbox default="300000"/>
+        <f:entry title="${%Gap}" field="sleepExt">
+            <f:textbox default="300"/>
+        </f:entry>
+        <f:entry title="${%Timeout}" field="timeoutExt">
+            <f:textbox default="3h"/>
         </f:entry>
         <f:entry title="${%Share}" field="share">
             <f:textbox default="1"/>

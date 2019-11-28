@@ -1,15 +1,12 @@
 package cn.testin.plugins.testinpro.api.channel;
 
 import cn.testin.plugins.testinpro.TestinProBuilder;
-import cn.testin.plugins.testinpro.enums.ErrorCode;
 import cn.testin.plugins.testinpro.exception.CommonException;
 import hudson.FilePath;
 import hudson.model.TaskListener;
 import net.sf.json.JSONObject;
-
-import java.io.File;
-
 import static cn.testin.plugins.testinpro.utils.http.CapableHttpUtil.*;
+import static cn.testin.plugins.testinpro.utils.other.ExceptionUtils.handlerException;
 import static cn.testin.plugins.testinpro.utils.verify.ObjectUtils.isEmpty;
 
 /**
@@ -42,9 +39,9 @@ public class OpenApi {
         try {
             if (headReq){
                 if (isEmpty(filePath) || !filePath.exists()){
-                    throw new CommonException(ErrorCode.unknownError.getCode(), String.format("invalid file or not exists: path{%s}", filePath));
+                    handlerException(String.format("invalid file or not exists: path{%s}", filePath));
                 }
-                response = stringData(post(builder.getUrl(), testinHeads(req), getFileRequestBody(new File(filePath.getRemote()))));
+                response = stringData(post(builder.getUrl(), testinHeads(req), getFileRequestBody(filePath.read())));
             }else {
                 response = stringData(post(builder.getUrl(), defaultHeads(), req));
             }
@@ -58,6 +55,9 @@ public class OpenApi {
             }
             return null;
         }catch (Exception e){
+            if (e instanceof CommonException) {
+                throw (CommonException) e;
+            }
             listener.error(e.getMessage());
             return null;
         }finally {

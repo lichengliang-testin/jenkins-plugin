@@ -1,14 +1,16 @@
 package cn.testin.plugins.testinpro.utils.http;
 
 import cn.testin.plugins.testinpro.annotation.Nullable;
-import cn.testin.plugins.testinpro.enums.ErrorCode;
 import cn.testin.plugins.testinpro.exception.CommonException;
 import okhttp3.*;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Map;
 
+import static cn.testin.plugins.testinpro.utils.other.ExceptionUtils.handlerException;
 import static cn.testin.plugins.testinpro.utils.verify.ObjectUtils.isEmpty;
 
 /**
@@ -63,11 +65,11 @@ public class CapableHttpUtil {
 
     }
 
-    public static Headers defaultHeads(){
+    public static Headers defaultHeads() {
         return Headers.of("Content-Type", "text/plain");
     }
 
-    public static Headers testinHeads(String req){
+    public static Headers testinHeads(String req) {
         return Headers.of("UPLOAD-JSON", req);
     }
 
@@ -94,12 +96,12 @@ public class CapableHttpUtil {
                 );
 
             } catch (IOException e) {
-                e.printStackTrace();
-                // TODO
+                handlerException(e);
             }
         }
 
-        throw new CommonException(ErrorCode.unknownError.getCode(), String.format("url is invalid: Message.{%s}", url));
+        handlerException(String.format("url is invalid: Message.{%s}", url));
+        return null;
     }
 
     public static Response post(@Nullable final String url, Headers headers, String req) {
@@ -120,12 +122,11 @@ public class CapableHttpUtil {
                 );
 
             } catch (IOException e) {
-                e.printStackTrace();
-                // TODO
+                handlerException(e);
             }
         }
-
-        throw new CommonException(ErrorCode.unknownError.getCode(), String.format("url is invalid: Message.{%s}", url));
+        handlerException(String.format("url is invalid: Message.{%s}", url));
+        return null;
     }
 
     @Nullable
@@ -140,6 +141,25 @@ public class CapableHttpUtil {
 
     public static RequestBody defaultRequestBody(String req) {
         return RequestBody.create(req, MediaType.parse("text/plain"));
+    }
+
+    public static RequestBody getFileRequestBody(InputStream file) {
+        try (
+                ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+                InputStream in = file
+        ) {
+            int cL = 1024 * 1024 * 1024;
+            byte[] b = new byte[cL];
+
+            int read;
+            while ((read = in.read(b)) > 0) {
+                outputStream.write(b, 0, read);
+            }
+            return RequestBody.create(outputStream.toByteArray(), MediaType.parse("application/octet-stream"));
+        } catch (IOException e) {
+            handlerException(e);
+        }
+        return null;
     }
 
     public static RequestBody getFileRequestBody(File file) {
@@ -218,8 +238,7 @@ public class CapableHttpUtil {
             try {
                 return body.string();
             } catch (IOException e) {
-                e.printStackTrace();
-                // TODO
+                handlerException(e);
             }
         }
         return null;

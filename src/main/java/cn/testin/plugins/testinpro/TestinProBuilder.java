@@ -3,13 +3,13 @@ package cn.testin.plugins.testinpro;
 import cn.testin.plugins.testinpro.annotation.Nullable;
 import cn.testin.plugins.testinpro.context.RunnerContext;
 import cn.testin.plugins.testinpro.context.ServiceContext;
-import cn.testin.plugins.testinpro.enums.ErrorCode;
 import cn.testin.plugins.testinpro.exception.CommonException;
 import cn.testin.plugins.testinpro.handler.TestinProHandler;
 import cn.testin.plugins.testinpro.handler.impl.*;
 import cn.testin.plugins.testinpro.service.TestinProService;
 import cn.testin.plugins.testinpro.service.impl.TestinProServiceImpl;
 import cn.testin.plugins.testinpro.utils.ResourceUtils;
+import cn.testin.plugins.testinpro.utils.TimeUtils;
 import cn.testin.plugins.testinpro.utils.http.CapableHttpUtil;
 import hudson.Launcher;
 import hudson.Extension;
@@ -35,6 +35,7 @@ import org.jenkinsci.Symbol;
 
 import static cn.testin.plugins.testinpro.utils.BeanUtils.instantiation;
 import static cn.testin.plugins.testinpro.utils.StringUtils.tokenizeToSplit;
+import static cn.testin.plugins.testinpro.utils.other.ExceptionUtils.handlerException;
 import static cn.testin.plugins.testinpro.utils.verify.ObjectUtils.isEmpty;
 
 /**
@@ -60,8 +61,10 @@ public class TestinProBuilder extends Builder implements BuildStep, Serializable
     private String packagePath;
     private String packageUrl;
 
-    private Long sleep;
+    private String sleepExt;
     private Integer share;
+
+    private String timeoutExt;
 
     private RunnerContext context;
     private ServiceContext serviceContext = new ServiceContext();
@@ -109,13 +112,18 @@ public class TestinProBuilder extends Builder implements BuildStep, Serializable
     }
 
     @DataBoundSetter
-    public void setSleep(Long sleep) {
-        this.sleep = sleep;
+    public void setSleepExt(String sleep) {
+        this.sleepExt = sleep;
     }
 
     @DataBoundSetter
     public void setShare(Integer share) {
         this.share = share;
+    }
+
+    @DataBoundSetter
+    public void setTimeoutExt(String timeoutExt) {
+        this.timeoutExt = timeoutExt;
     }
 
     public static long getSerialVersionUID() {
@@ -154,8 +162,12 @@ public class TestinProBuilder extends Builder implements BuildStep, Serializable
         return packagePath;
     }
 
-    public Long getSleep() {
-        return sleep;
+    public String getSleepExt() {
+        return sleepExt;
+    }
+
+    public String getTimeoutExt() {
+        return timeoutExt;
     }
 
     public Integer getShare() {
@@ -245,8 +257,7 @@ public class TestinProBuilder extends Builder implements BuildStep, Serializable
                 TestinProHandler testinProHandler = instantiation(handler, this);
                 result.add(testinProHandler);
             } catch (ClassNotFoundException e) {
-                e.printStackTrace();
-                throw new CommonException(ErrorCode.unknownError.getCode(), e);
+                handlerException(e);
             }
         }
         return result;
@@ -285,10 +296,10 @@ public class TestinProBuilder extends Builder implements BuildStep, Serializable
     public boolean perform(Build<?, ?> build, Launcher launcher, BuildListener listener) throws InterruptedException, IOException {
         try {
             this.perform(build, build.getWorkspace(), launcher, listener);
-        }catch (CommonException e) {
+        } catch (CommonException e) {
             listener.error(draw(e.getMessage()));
             return false;
-        }catch (InterruptedException e) {
+        } catch (InterruptedException e) {
             listener.error(draw(Messages.TestinProBuilder_DescriptorImpl_Interrupted()));
             return false;
         }
@@ -361,6 +372,30 @@ public class TestinProBuilder extends Builder implements BuildStep, Serializable
 
         public FormValidation doCheckPackagePath(@QueryParameter("packagePath") String path) {
             return check(path, Messages.TestinProBuilder_DescriptorImpl_errors_missingPackagePath());
+        }
+
+        public FormValidation doCheckSleepExt(@QueryParameter("sleepExt") String sleepExt) {
+            if (isEmpty(sleepExt)) {
+                return FormValidation.ok();
+            }
+            try {
+                TimeUtils.parseExt(sleepExt);
+                return FormValidation.ok();
+            } catch (Exception e) {
+                return FormValidation.error(Messages.TestinProBuilder_DescriptorImpl_errors_sleepExt());
+            }
+        }
+
+        public FormValidation doCheckTimeoutExt(@QueryParameter("timeoutExt") String timeoutExt) {
+            if (isEmpty(timeoutExt)) {
+                return FormValidation.ok();
+            }
+            try {
+                TimeUtils.parseExt(timeoutExt);
+                return FormValidation.ok();
+            } catch (Exception e) {
+                return FormValidation.error(Messages.TestinProBuilder_DescriptorImpl_errors_timeoutExt());
+            }
         }
 
         @Override

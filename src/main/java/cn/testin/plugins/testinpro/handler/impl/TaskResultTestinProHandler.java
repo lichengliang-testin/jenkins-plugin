@@ -16,6 +16,7 @@ import net.sf.json.JSONObject;
 import java.io.PrintStream;
 
 import static cn.testin.plugins.testinpro.bean.PortalTask.isDone;
+import static cn.testin.plugins.testinpro.utils.TimeUtils.parseExt;
 import static cn.testin.plugins.testinpro.utils.verify.ObjectUtils.isEmpty;
 
 /**
@@ -46,10 +47,10 @@ public class TaskResultTestinProHandler implements TestinProHandler {
         if (isEmpty(builder)) {
             handlerNoArgException("builder ");
         }
-        if (isEmpty(builder.getSleep())) {
+        if (isEmpty(builder.getSleepExt())) {
             SLEEP = DEFAULT_SLEEP;
         } else {
-            SLEEP = builder.getSleep();
+            SLEEP = parseExt(builder.getSleepExt());
         }
         this.needRetry = needRetry;
         this.builder = builder;
@@ -108,7 +109,7 @@ public class TaskResultTestinProHandler implements TestinProHandler {
                 Thread.sleep(SLEEP);
             } catch (InterruptedException e) {
                 this.needRetry = false;
-                throw new CommonException(ErrorCode.unknownError.getCode(), Messages.TestinProBuilder_DescriptorImpl_Interrupted());
+                handlerException(Messages.TestinProBuilder_DescriptorImpl_Interrupted());
             }
         }
 
